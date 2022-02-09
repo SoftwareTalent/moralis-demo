@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <!-- Moralis SDK code -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+  </head>
+  <body>
+    <h1>NFT Demo</h1>
+
+    <button onclick="login()" id="btn-login">Connect</button>
+    <button onclick="logout()" id="btn-logout">Disconect</button>
+
+    <script>
+      // connect to Moralis server
+
+      serverUrl = "https://ekgngndwcwpz.usemoralis.com:2053/server";
+      appId = "4HTMF0r8QGR2Wwp6Eqmig9djhGDvSv8nMAWW9wIo";
+      Moralis.start({ serverUrl, appId });
+
+      // Login with metamask and get the ethAdress
+      login = () => {
+        Moralis.authenticate({ type: "sol" }).then(function (user) {
+          console.log(user.get("ethAddress"));
+          document.getElementById("btn-login").innerHTML =
+            user.get("solAddress");
+        });
+      };
+
+      // Get NFT list
+
+      getNFTBalances = async () => {
+        const options = {
+          chain: "eth",
+          address: "0x8Ce4c33cEAf62283e76F4F742602aC709Ba25B8e",
+        };
+        const userEtherNFTs = await Moralis.Web3API.account.getNFTs(options);
+        console.log(userEtherNFTs, "NFTs");
+      };
+
+      getNFTBalances();
+    </script>
+  </body>
+</html>
